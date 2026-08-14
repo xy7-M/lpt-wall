@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+@theme {
+  /* 配色 token（手账纸墨风） */
+  --color-paper:        #F5F0E8;
+  --color-paper-dot:    #E4DCCB;
+  --color-card:         #FAF6EF;
+  --color-ink:          #1C1911;
+  --color-ink-soft:     #7A7468;
+  --color-accent:       #E8634A;
+  --color-green:        #6B9E7A;
+  --color-blue:         #4A7FA5;
+  --color-gold:         #D4A800;
+  --color-sticky:       #FBE8A6;
+
+  /* 字体 token */
+  --font-en-title: "Caveat", "Segoe Script", "Bradley Hand", "Comic Sans MS", cursive;
+  --font-zh-title: "Kaiti SC", "STKaiti", serif;
+
+  /* 硬边投影（不允许模糊） */
+  --shadow-stamp:    3px 4px 0 rgba(28,25,17,.16);
+  --shadow-stamp-lg: 6px 6px 0 rgba(28,25,17,.16);
+}
+
+@layer base {
+  body {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 "PingFang SC", "Microsoft YaHei", sans-serif;
+    line-height: 1.6;
+    background-color: var(--color-paper);
+    background-image: radial-gradient(var(--color-paper-dot) 1.4px, transparent 1.4px);
+    background-size: 26px 26px;
+    min-height: 100vh;
+  }
+  .font-en-title { font-family: var(--font-en-title); }
+  .font-zh-title { font-family: var(--font-zh-title); }
+}
+
+@layer components {
+  /* 卡片：墨线描边 + 圆角 + 硬边投影 */
+  .card {
+    background: var(--color-card);
+    border: 1.5px solid var(--color-ink);
+    border-radius: 16px;
+    box-shadow: var(--shadow-stamp);
+    padding: 20px;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  /* 贴纸轻微倾斜 */
+  .tilt-left  { transform: rotate(-1.2deg); }
+  .tilt-right { transform: rotate( 1.5deg); }
+  /* hover 回正 + 轻微上移 */
+  .card:hover,
+  .tilt-left:hover,
+  .tilt-right:hover {
+    transform: rotate(0deg) translateY(-4px);
+    box-shadow: var(--shadow-stamp-lg);
+  }
+
+  /* 标签 / 徽章：便签黄 + 墨线 + 硬边投影 */
+  .badge {
+    display: inline-block;
+    background: var(--color-sticky);
+    border: 1.5px solid var(--color-ink);
+    border-radius: 999px;
+    padding: 3px 12px;
+    font-size: 13px;
+    color: var(--color-ink);
+    box-shadow: var(--shadow-stamp);
+  }
+
+  /* 按钮：强调色只点睛 */
+  .btn {
+    display: inline-block;
+    background: var(--color-accent);
+    color: #fff;
+    border: 1.5px solid var(--color-ink);
+    border-radius: 12px;
+    padding: 10px 22px;
+    font-size: 15px;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: var(--shadow-stamp);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover  { transform: translateY(-3px); box-shadow: var(--shadow-stamp-lg); }
+  .btn:active { transform: translateY(0);    box-shadow: var(--shadow-stamp); }
+  .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+  /* 便利贴：墨线描边 + 圆角 + 硬边投影 + 倾斜（tilt 由 --tilt 变量控制） */
+  .note {
+    border: 1.5px solid var(--color-ink);
+    border-radius: 16px;
+    box-shadow: var(--shadow-stamp);
+    padding: 18px 20px;
+    background: var(--color-sticky);
+    transform: rotate(var(--tilt, 0deg));
+    transition: transform .15s ease, box-shadow .15s ease;
+    break-inside: avoid;
+  }
+  .note:hover {
+    transform: rotate(0deg) translateY(-4px);
+    box-shadow: var(--shadow-stamp-lg);
+  }
+
+  /* 入场弹入 */
+  @keyframes pop-in {
+    0%   { transform: scale(.7);  opacity: 0; }
+    60%  { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1);   opacity: 1; }
+  }
+  .pop { animation: pop-in .25s ease both; }
+}
